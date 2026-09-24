@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#081f28">
+  <meta name="description" content="Salva la tartaruga: indovina la parola del mare lettera per lettera prima che il sacchetto di plastica la raggiunga.">
+  <title>Salva la tartaruga — Missione Mare Pulito</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23081f28'/%3E%3Cpath d='M6 13q5-6 10 0t10 0M6 21q5-6 10 0t10 0' fill='none' stroke='%23d5fc70' stroke-width='3'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./giochi/giochi.css">
+  <script src="./giochi/comune.js" defer></script>
+  <script src="./giochi/dati/carte-taboo.js" defer></script>
+  <script src="./giochi/tartaruga.js" defer></script>
+</head>
+<body>
+  <svg class="icon-library" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs>
+    <symbol id="i-wave" viewBox="0 0 24 24"><path d="M2 8c3-5 7 5 10 0s7 5 10 0M2 15c3-5 7 5 10 0s7 5 10 0"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-sound" viewBox="0 0 24 24"><path d="m11 5-6 4H2v6h3l6 4V5Zm5 4a5 5 0 0 1 0 6m3-9a9 9 0 0 1 0 12"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+  </defs></svg>
+
+  <header class="site-header wrap">
+    <a class="brand" href="./index.html" aria-label="Missione Mare Pulito, menu dei giochi"><span class="brand-icon"><svg><use href="#i-wave"/></svg></span><span>bat<span class="brand-light">net</span>mar<span class="brand-dot">.</span></span></a>
+    <div class="header-actions"><a class="back-link" href="./index.html">← <span class="long">Torna al </span>menu</a><button class="icon-button is-muted" id="soundButton" aria-label="Attiva i suoni" aria-pressed="false"><svg><use href="#i-sound"/></svg></button></div>
+  </header>
+
+  <main class="wrap">
+    <div class="page-heading"><div><span class="eyebrow">GIOCO DI PAROLE · DA SOLI O IN GRUPPO</span><h1>Salva la <em>tartaruga</em></h1></div><button class="help-button" data-open="rulesDialog"><span aria-hidden="true">?</span> Regole</button></div>
+
+    <section class="panel" aria-label="Salva la tartaruga">
+      <div class="screen" id="playScreen">
+        <h2 class="visually-hidden">Indovina la parola</h2>
+        <div class="hang-top">
+          <div class="hang-stats"><span class="chip">Salvate di fila: <strong id="streak">0</strong></span><span class="chip">Record: <strong id="best">0</strong></span></div>
+          <span class="muted" id="wordInfo" style="font-size:13px"></span>
+        </div>
+        <div class="sea-track" id="track" aria-hidden="true">
+          <div class="lives" id="lives"></div>
+          <span class="track-trash" id="trash"><span class="trash-item">🛍️</span></span>
+          <span class="track-turtle">🐢</span>
+          <span class="track-label">IL SACCHETTO SI AVVICINA A OGNI ERRORE</span>
+        </div>
+        <p class="visually-hidden" id="livesText" aria-live="polite"></p>
+        <div class="word" id="word" aria-label="Parola da indovinare"></div>
+        <div class="hints" id="hints"></div>
+        <div id="guessArea">
+          <div class="keyboard" id="keyboard" aria-label="Lettere"></div>
+          <div class="hang-actions"><button class="btn btn-soft" id="hintButton">💡 Indizio <small style="opacity:.7">(costa una vita)</small></button><button class="text-button" id="skipButton">Cambia parola</button></div>
+        </div>
+        <div class="hang-result" id="result" hidden aria-live="polite"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap"><span>MISSIONE MARE PULITO <span class="footer-separator">/</span> SALVA LA TARTARUGA</span><a href="./index.html">← Torna al menu dei giochi</a></footer>
+
+  <dialog id="rulesDialog" aria-labelledby="rulesTitle">
+    <button class="dialog-close icon-button" data-close aria-label="Chiudi"><svg><use href="#i-close"/></svg></button>
+    <span class="eyebrow">COME SI GIOCA</span>
+    <h2 id="rulesTitle">Una lettera alla volta.</h2>
+    <ul>
+      <li>Indovina la parola del mare scegliendo una lettera alla volta, con i tasti sullo schermo o con la tastiera.</li>
+      <li>Ogni lettera sbagliata avvicina il sacchetto di plastica alla tartaruga. Hai <strong>6 vite</strong>.</li>
+      <li>L’<strong>indizio</strong> mostra una parola collegata, ma costa una vita.</li>
+      <li>Le lettere accentate si indovinano con la lettera semplice: la A vale anche per À.</li>
+    </ul>
+    <p class="dialog-note">In gruppo: a turno, ognuno propone una lettera. Le parole sono le stesse del Taboo del Mare.</p>
+  </dialog>
+</body>
+</html>

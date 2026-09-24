@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#081f28">
+  <meta name="description" content="Taboo del Mare: due squadre, un cronometro e tante parole su mare, plastica ed ecologia da far indovinare senza dire le parole vietate.">
+  <title>Taboo del Mare — Missione Mare Pulito</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23081f28'/%3E%3Cpath d='M6 13q5-6 10 0t10 0M6 21q5-6 10 0t10 0' fill='none' stroke='%23d5fc70' stroke-width='3'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./giochi/giochi.css">
+  <script src="./giochi/comune.js" defer></script>
+  <script src="./giochi/dati/carte-taboo.js" defer></script>
+  <script src="./giochi/taboo.js" defer></script>
+</head>
+<body>
+  <svg class="icon-library" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs>
+    <symbol id="i-wave" viewBox="0 0 24 24"><path d="M2 8c3-5 7 5 10 0s7 5 10 0M2 15c3-5 7 5 10 0s7 5 10 0"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-sound" viewBox="0 0 24 24"><path d="m11 5-6 4H2v6h3l6 4V5Zm5 4a5 5 0 0 1 0 6m3-9a9 9 0 0 1 0 12"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+  </defs></svg>
+
+  <header class="site-header wrap">
+    <a class="brand" href="./index.html" aria-label="Missione Mare Pulito, menu dei giochi"><span class="brand-icon"><svg><use href="#i-wave"/></svg></span><span>bat<span class="brand-light">net</span>mar<span class="brand-dot">.</span></span></a>
+    <div class="header-actions"><a class="back-link" href="./index.html">← <span class="long">Torna al </span>menu</a><button class="icon-button is-muted" id="soundButton" aria-label="Attiva i suoni" aria-pressed="false"><svg><use href="#i-sound"/></svg></button></div>
+  </header>
+
+  <main class="wrap">
+    <div class="page-heading"><div><span class="eyebrow">GIOCO A SQUADRE · 4 O PIÙ GIOCATORI</span><h1>Taboo <em>del Mare</em></h1></div><button class="help-button" data-open="rulesDialog" id="rulesButton"><span aria-hidden="true">?</span> Regole</button></div>
+
+    <section class="panel" aria-label="Taboo del Mare">
+      <!-- Preparazione -->
+      <div class="screen" id="setupScreen">
+        <div class="resume-box" id="resumeBox" hidden><p id="resumeText"></p><div class="actions" style="margin:0"><button class="btn btn-primary" id="resumeButton">Riprendi la partita <svg><use href="#i-arrow"/></svg></button><button class="text-button" id="discardButton">Elimina</button></div></div>
+        <span class="eyebrow">PREPARIAMO LE SQUADRE</span>
+        <h2 class="screen-title">Chi gioca?</h2>
+        <p class="screen-lead">Scrivete i nomi: a ogni turno una squadra spiega, alternandosi con l’altra, e i giocatori di ogni squadra si danno il cambio.</p>
+        <div class="setup-grid">
+          <div class="setup-box team-box team-a"><label class="field-label" for="teamAName">Squadra 1</label><input class="text-input team-name-input" id="teamAName" maxlength="16" placeholder="Onde" autocomplete="off"><span class="field-label">Giocatori (almeno 2)</span><div id="teamAPlayers"></div></div>
+          <div class="setup-box team-box team-b"><label class="field-label" for="teamBName">Squadra 2</label><input class="text-input team-name-input" id="teamBName" maxlength="16" placeholder="Correnti" autocomplete="off"><span class="field-label">Giocatori (almeno 2)</span><div id="teamBPlayers"></div></div>
+        </div>
+        <div class="options">
+          <fieldset class="seg"><legend class="field-label">Durata del turno</legend><div class="seg-options">
+            <input type="radio" name="duration" id="d45" value="45"><label for="d45">45 s</label>
+            <input type="radio" name="duration" id="d60" value="60" checked><label for="d60">60 s</label>
+            <input type="radio" name="duration" id="d90" value="90"><label for="d90">90 s</label>
+          </div></fieldset>
+          <fieldset class="seg"><legend class="field-label">Ogni giocatore spiega</legend><div class="seg-options">
+            <input type="radio" name="rounds" id="r1" value="1"><label for="r1">1 volta</label>
+            <input type="radio" name="rounds" id="r2" value="2" checked><label for="r2">2 volte</label>
+            <input type="radio" name="rounds" id="r3" value="3"><label for="r3">3 volte</label>
+          </div></fieldset>
+          <fieldset class="seg"><legend class="field-label">Carte da passare per turno</legend><div class="seg-options">
+            <input type="radio" name="passes" id="p1" value="1"><label for="p1">1</label>
+            <input type="radio" name="passes" id="p3" value="3" checked><label for="p3">3</label>
+            <input type="radio" name="passes" id="pinf" value="-1"><label for="pinf">Illimitate</label>
+          </div></fieldset>
+        </div>
+        <div class="actions"><button class="btn btn-primary" id="startButton">Inizia la partita <svg><use href="#i-arrow"/></svg></button><span class="muted" id="setupSummary" style="font-size:13px"></span></div>
+      </div>
+
+      <!-- Chi tocca -->
+      <div class="screen" id="readyScreen" hidden>
+        <div class="two-cols">
+          <div>
+            <span class="eyebrow" id="readyTurn">TURNO 1</span>
+            <h2 class="turn-call"><span class="visually-hidden">Tocca a </span><span id="readyName"></span></h2>
+            <span class="team-chip" id="readyTeam"></span>
+            <p class="turn-hint"><span aria-hidden="true">📱</span><span id="readyHint"></span></p>
+            <div class="actions"><button class="btn btn-primary" id="beginButton"><span id="beginLabel">Via!</span> <svg><use href="#i-arrow"/></svg></button><button class="text-button" id="stopButton">Termina la partita</button></div>
+          </div>
+          <div class="board" id="readyBoard" aria-label="Classifica"></div>
+        </div>
+      </div>
+
+      <!-- Turno in corso -->
+      <div class="screen" id="playScreen" hidden>
+        <h2 class="visually-hidden">Turno in corso</h2>
+        <div class="play-top"><span class="team-chip" id="playTeam"></span><div class="timer" aria-live="off"><strong id="timeLeft">60</strong><span>s</span></div><div class="turn-points">punti del turno<strong id="turnPoints">0</strong></div></div>
+        <div class="time-bar" aria-hidden="true"><span id="timeBar"></span></div>
+        <div class="taboo-stage">
+          <article class="taboo-card" id="card" aria-live="polite"><span class="card-label">FAI INDOVINARE</span><p class="taboo-word" id="cardWord"></p><span class="card-label bad">NON PUOI DIRE</span><ul class="taboo-list" id="cardTaboo"></ul></article>
+          <div class="flash" id="flash" aria-hidden="true"></div>
+        </div>
+        <div class="play-actions">
+          <button class="btn btn-bad" id="tabooButton">✗ Taboo! <small>−1 punto</small></button>
+          <button class="btn btn-soft" id="passButton">↷ Passa <small id="passLeft">3 rimaste</small></button>
+          <button class="btn btn-good" id="okButton">✓ Indovinata <small>+1 punto</small></button>
+        </div>
+        <div class="play-secondary"><button class="text-button" id="undoButton">↶ Annulla l’ultima</button><button class="text-button" id="pauseButton">❚❚ Pausa</button></div>
+        <p class="keys-hint">Tastiera: <kbd>→</kbd> indovinata · <kbd>T</kbd> taboo · <kbd>S</kbd> passa · <kbd>Z</kbd> annulla · <kbd>P</kbd> pausa</p>
+        <div class="pause-layer" id="pauseLayer" hidden><span class="eyebrow">TEMPO FERMO</span><h3>Turno in pausa</h3><p>La carta è nascosta finché non riprendete.</p><button class="btn btn-primary" id="resumeTurnButton">Riprendi il turno <svg><use href="#i-arrow"/></svg></button></div>
+      </div>
+
+      <!-- Riepilogo del turno -->
+      <div class="screen" id="summaryScreen" hidden>
+        <span class="eyebrow" id="summaryEyebrow">TEMPO SCADUTO</span>
+        <h2 class="screen-title" id="summaryTitle">Fine del turno</h2>
+        <div class="summary-total"><strong id="summaryPoints">0</strong><span id="summaryText"></span></div>
+        <p class="muted" id="summaryHelp" style="font-size:13px;margin:0 0 12px">Qualcosa non torna? Tocca una carta per correggerne l’esito.</p>
+        <ul class="result-list" id="resultList"></ul>
+        <div class="actions"><button class="btn btn-primary" id="confirmButton">Conferma i punti <svg><use href="#i-arrow"/></svg></button></div>
+      </div>
+
+      <!-- Fine partita -->
+      <div class="screen" id="endScreen" hidden>
+        <div class="confetti" id="confetti" aria-hidden="true"></div>
+        <div class="end-hero"><span class="trophy" aria-hidden="true">🏆</span><span class="eyebrow">PARTITA FINITA</span><h2 class="screen-title" id="endTitle"></h2><p id="endText"></p></div>
+        <div class="board end-board" id="endBoard"></div>
+        <div class="actions end-actions"><button class="btn btn-primary" id="rematchButton">Rivincita con le stesse squadre <svg><use href="#i-arrow"/></svg></button><button class="btn btn-ghost" id="newTeamsButton">Cambia squadre</button><a class="btn btn-ghost" href="./index.html">← Torna al menu</a></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap"><span>MISSIONE MARE PULITO <span class="footer-separator">/</span> TABOO DEL MARE</span><a href="./index.html">← Torna al menu dei giochi</a></footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <dialog id="rulesDialog" aria-labelledby="rulesTitle">
+    <button class="dialog-close icon-button" data-close aria-label="Chiudi"><svg><use href="#i-close"/></svg></button>
+    <span class="eyebrow">COME SI GIOCA</span>
+    <h2 id="rulesTitle">Spiega senza dire le parole vietate.</h2>
+    <h3>Il turno</h3>
+    <p>A ogni turno il gioco chiama un giocatore, alternando le due squadre. Chi è chiamato prende il dispositivo e, finché dura il tempo, descrive le parole della carta alla propria squadra.</p>
+    <h3>I punti</h3>
+    <ul>
+      <li><strong>Indovinata:</strong> +1 punto alla squadra e a chi spiega.</li>
+      <li><strong>Taboo:</strong> −1 punto se chi spiega dice una parola vietata, la parola da indovinare o una parte di essa.</li>
+      <li><strong>Passa:</strong> 0 punti, si cambia carta. I passaggi per turno sono limitati.</li>
+    </ul>
+    <h3>Chi controlla</h3>
+    <p>La squadra avversaria guarda la carta insieme a chi spiega e grida «Taboo!» se sente una parola vietata. Vietati anche gesti, rime («fa rima con…»), lettere iniziali e traduzioni.</p>
+    <p class="dialog-note">A fine turno potete correggere l’esito di ogni carta prima di confermare. La carta sullo schermo allo scadere del tempo non vale punti. La partita si salva a ogni turno su questo dispositivo.</p>
+  </dialog>
+</body>
+</html>

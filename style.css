@@ -9,3 +9,7 @@
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
 
 @media(max-width:480px){.timer-icon{display:none}.instrument-actions #soundButton{display:none}.bio-line .meter{display:none}.instrument-bar{gap:12px}.instrument-actions{margin-left:auto}.control-tip strong{font-size:13px;line-height:1.4}.start-copy h2{font-size:42px}.start-screen{padding-top:76px}.start-callout{bottom:40px}.map-label{max-width:62%;line-height:1.5}.coordinates{font-size:8px}.scan-status{top:49px}.start-meta{font-size:8px}.result-stats{gap:20px}.instrument-label{letter-spacing:.5px}}
+.header-actions{display:flex;align-items:center;gap:22px}.games-link{color:var(--lime);text-decoration:none;font-size:14px;padding:8px 0}.result-actions .games-link{font-size:12px;color:var(--lime)}
+@media(max-width:480px){.games-link-long{display:none}.header-actions{gap:14px}}
+/* Su schermi bassi la scheda dei risultati scorre invece di essere tagliata. */
+.overlay-screen{overflow-y:auto;overscroll-behavior:contain}.overlay-screen>.result-card,.overlay-screen>.overlay-card{margin:auto}

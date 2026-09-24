@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#081f28">
+  <meta name="description" content="Chi vuol essere Custode del Mare? Un quiz a scalata su mare, plastica, biodiversità e clima: 12 domande, tre aiuti, vince chi fa più punti.">
+  <title>Chi vuol essere Custode del Mare? — Missione Mare Pulito</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23081f28'/%3E%3Cpath d='M6 13q5-6 10 0t10 0M6 21q5-6 10 0t10 0' fill='none' stroke='%23d5fc70' stroke-width='3'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./giochi/giochi.css">
+  <script src="./giochi/comune.js" defer></script>
+  <script src="./giochi/dati/domande-quiz.js" defer></script>
+  <script src="./giochi/quiz.js" defer></script>
+</head>
+<body>
+  <svg class="icon-library" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs>
+    <symbol id="i-wave" viewBox="0 0 24 24"><path d="M2 8c3-5 7 5 10 0s7 5 10 0M2 15c3-5 7 5 10 0s7 5 10 0"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-sound" viewBox="0 0 24 24"><path d="m11 5-6 4H2v6h3l6 4V5Zm5 4a5 5 0 0 1 0 6m3-9a9 9 0 0 1 0 12"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+  </defs></svg>
+
+  <header class="site-header wrap">
+    <a class="brand" href="./index.html" aria-label="Missione Mare Pulito, menu dei giochi"><span class="brand-icon"><svg><use href="#i-wave"/></svg></span><span>bat<span class="brand-light">net</span>mar<span class="brand-dot">.</span></span></a>
+    <div class="header-actions"><a class="back-link" href="./index.html">← <span class="long">Torna al </span>menu</a><button class="icon-button is-muted" id="soundButton" aria-label="Attiva i suoni" aria-pressed="false"><svg><use href="#i-sound"/></svg></button></div>
+  </header>
+
+  <main class="wrap">
+    <div class="page-heading"><div><span class="eyebrow">QUIZ A SCALATA · 1–8 GIOCATORI</span><h1>Chi vuol essere <em>Custode del Mare?</em></h1></div><button class="help-button" data-open="rulesDialog"><span aria-hidden="true">?</span> Regole</button></div>
+
+    <section class="panel" aria-label="Quiz">
+      <!-- Preparazione -->
+      <div class="screen" id="setupScreen">
+        <div class="resume-box" id="resumeBox" hidden><p id="resumeText"></p><div class="actions" style="margin:0"><button class="btn btn-primary" id="resumeButton">Riprendi la partita <svg><use href="#i-arrow"/></svg></button><button class="text-button" id="discardButton">Elimina</button></div></div>
+        <div class="two-cols">
+          <div>
+            <span class="eyebrow">I CONCORRENTI</span>
+            <h2 class="screen-title">Chi sale sulla piramide?</h2>
+            <p class="screen-lead">A turno, ogni concorrente risponde a una domanda del suo gradino. Si sale insieme, uno alla volta: chi sbaglia esce con i punti garantiti. Alla fine vince chi ha più punti.</p>
+            <span class="field-label">Giocatori</span>
+            <div id="quizPlayers"></div>
+            <div class="actions"><button class="btn btn-primary" id="startButton">Inizia il quiz <svg><use href="#i-arrow"/></svg></button></div>
+          </div>
+          <div>
+            <span class="field-label">La piramide dei punti</span>
+            <ol class="ladder" id="setupLadder" aria-label="Premi per ogni domanda"></ol>
+            <p class="ladder-note">★ Traguardi sicuri: superati questi gradini, anche sbagliando non si scende più sotto.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Passaggio di turno -->
+      <div class="screen" id="handoffScreen" hidden>
+        <div class="two-cols">
+          <div>
+            <span class="eyebrow" id="handoffEyebrow">PROSSIMA DOMANDA</span>
+            <h2 class="turn-call"><span class="visually-hidden">Tocca a </span><span id="handoffName"></span></h2>
+            <div class="handoff-stats">
+              <div class="stat gold"><span>In palio</span><strong id="handoffPrize"></strong></div>
+              <div class="stat"><span>Già in tasca</span><strong id="handoffPoints"></strong></div>
+              <div class="stat"><span>Aiuti</span><strong id="handoffLifelines"></strong></div>
+            </div>
+            <p class="turn-hint"><span aria-hidden="true">🎙️</span><span id="handoffHint"></span></p>
+            <div class="actions"><button class="btn btn-primary" id="readyButton">Sono pronto <svg><use href="#i-arrow"/></svg></button><button class="text-button" id="stopButton">Termina il quiz</button></div>
+          </div>
+          <div class="board"><div><span class="field-label">Classifica</span><ol class="rank-list" id="handoffBoard"></ol></div></div>
+        </div>
+      </div>
+
+      <!-- Domanda -->
+      <div class="screen" id="questionScreen" hidden>
+        <div class="quiz-layout">
+          <div>
+            <div class="q-head"><span class="team-chip" id="qPlayer"></span><span class="q-meta" id="qMeta"></span></div>
+            <h2 class="question" id="qText"></h2>
+            <div class="answers" id="answers"></div>
+            <div class="confirm-bar" id="confirmBar" hidden><p>È la tua risposta definitiva?</p><div><button class="btn btn-ghost" id="changeButton">Ci ripenso</button><button class="btn btn-primary" id="finalButton">Sì, definitiva</button></div></div>
+            <div class="lifelines" id="lifelines">
+              <button class="lifeline" id="fiftyButton"><b>50:50</b> Due risposte in meno</button>
+              <button class="lifeline" id="audienceButton"><b>👥</b> Chiedi al pubblico</button>
+              <button class="lifeline" id="swapButton"><b>↻</b> Cambia domanda</button>
+              <button class="text-button retire" id="retireButton">Mi ritiro</button>
+            </div>
+            <div class="reveal" id="reveal" hidden></div>
+          </div>
+          <aside class="ladder-aside"><ol class="ladder" id="ladder" aria-label="Piramide dei punti"></ol><p class="ladder-note">★ Traguardi sicuri</p></aside>
+        </div>
+      </div>
+
+      <!-- Classifica finale -->
+      <div class="screen" id="endScreen" hidden>
+        <div class="confetti" id="confetti" aria-hidden="true"></div>
+        <div class="end-hero"><span class="trophy" aria-hidden="true">🏆</span><span class="eyebrow">IL QUIZ È FINITO</span><h2 class="screen-title" id="endTitle"></h2><p id="endText"></p></div>
+        <div class="board end-board"><ol class="rank-list" id="endBoard"></ol></div>
+        <div class="actions end-actions"><button class="btn btn-primary" id="againButton">Nuova partita, stessi giocatori <svg><use href="#i-arrow"/></svg></button><button class="btn btn-ghost" id="changePlayersButton">Cambia giocatori</button><a class="btn btn-ghost" href="./index.html">← Torna al menu</a></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap"><span>MISSIONE MARE PULITO <span class="footer-separator">/</span> CHI VUOL ESSERE CUSTODE DEL MARE?</span><a href="./index.html">← Torna al menu dei giochi</a></footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <dialog id="rulesDialog" aria-labelledby="rulesTitle">
+    <button class="dialog-close icon-button" data-close aria-label="Chiudi"><svg><use href="#i-close"/></svg></button>
+    <span class="eyebrow">COME SI GIOCA</span>
+    <h2 id="rulesTitle">Dodici gradini fino al milione.</h2>
+    <h3>La scalata</h3>
+    <p>Ogni gradino vale più punti del precedente: le prime 4 domande sono facili, le 4 centrali medie, le ultime 4 difficili. Si sale un gradino alla volta, tutti insieme: prima rispondono tutti alla domanda 1, poi alla 2, e così via.</p>
+    <h3>Rispondere, ritirarsi, sbagliare</h3>
+    <ul>
+      <li><strong>Risposta giusta:</strong> sali di un gradino e ottieni i punti indicati.</li>
+      <li><strong>Mi ritiro:</strong> esci dal gioco e tieni i punti già conquistati.</li>
+      <li><strong>Risposta sbagliata:</strong> esci con i punti dell’ultimo traguardo sicuro ★ superato (1.000 o 20.000), oppure con 0.</li>
+    </ul>
+    <h3>Tre aiuti a testa</h3>
+    <ul>
+      <li><strong>50:50</strong> elimina due risposte sbagliate.</li>
+      <li><strong>Chiedi al pubblico</strong> mostra un sondaggio simulato: il pubblico non ha sempre ragione!</li>
+      <li><strong>Cambia domanda</strong> sostituisce la domanda con un’altra dello stesso livello.</li>
+    </ul>
+    <p class="dialog-note">Vince chi ha più punti quando tutti sono usciti o hanno completato la piramide. Tastiera: <strong>A B C D</strong> per scegliere. I punti sono simbolici. La partita si salva dopo ogni risposta.</p>
+  </dialog>
+</body>
+</html>

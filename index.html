@@ -4,75 +4,105 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#081f28">
-  <meta name="description" content="Una missione di 90 secondi con Bat net mar. Raccogli la plastica, riconosci la vita marina e scopri perché la salute del mare riguarda tutti noi.">
-  <title>Bat net mar — Missione Mare Vivo</title>
+  <meta name="description" content="Missione Mare Pulito: plastica, biodiversità e salute… mettiamoci in gioco! I giochi di Bat net mar: Missione Mare Vivo, Taboo del Mare, il quiz Chi vuol essere Custode del Mare?, il Memory degli scambi e Salva la tartaruga.">
+  <title>Missione Mare Pulito: plastica, biodiversità e salute… mettiamoci in gioco!</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23081f28'/%3E%3Cpath d='M6 13q5-6 10 0t10 0M6 21q5-6 10 0t10 0' fill='none' stroke='%23d5fc70' stroke-width='3'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="./style.css">
-  <script src="./game.js" defer></script>
+  <link rel="stylesheet" href="./giochi/giochi.css">
 </head>
 <body>
   <svg class="icon-library" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs>
     <symbol id="i-wave" viewBox="0 0 24 24"><path d="M2 8c3-5 7 5 10 0s7 5 10 0M2 15c3-5 7 5 10 0s7 5 10 0"/></symbol>
-    <symbol id="i-scan" viewBox="0 0 24 24"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5M7 12h10m-5-5v10"/></symbol>
     <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6"/></symbol>
-    <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol>
-    <symbol id="i-sound" viewBox="0 0 24 24"><path d="m11 5-6 4H2v6h3l6 4V5Zm5 4a5 5 0 0 1 0 6m3-9a9 9 0 0 1 0 12"/></symbol>
-    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
-    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M20 5c-3-3-7-1-8 1-1-2-5-4-8-1s-1 7 8 14c9-7 11-11 8-14Z"/></symbol>
-    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
   </defs></svg>
 
-  <header class="site-header">
-    <a class="brand" href="./" aria-label="Bat net mar, inizio"><span class="brand-icon"><svg><use href="#i-wave"/></svg></span><span>bat<span class="brand-light">net</span>mar<span class="brand-dot">.</span></span></a>
+  <header class="site-header wrap">
+    <a class="brand" href="./index.html" aria-label="Missione Mare Pulito, menu dei giochi"><span class="brand-icon"><svg><use href="#i-wave"/></svg></span><span>bat<span class="brand-light">net</span>mar<span class="brand-dot">.</span></span></a>
     <span class="header-caption">PICCOLE AZIONI. UN MARE DI DIFFERENZA.</span>
-    <button class="text-button" id="aboutButton">Il progetto <span aria-hidden="true">↗</span></button>
   </header>
 
-  <main>
-    <div class="mission-heading"><div><span class="eyebrow">IL GIOCO DI BAT NET MAR</span><h1>Missione <em>Mare Vivo</em></h1></div><button class="help-button" id="helpButton"><span aria-hidden="true">?</span> Come si gioca</button></div>
-
-    <section class="game-shell" aria-label="Missione Mare Vivo">
-      <div class="instrument-bar">
-        <div class="timer-wrap"><span class="timer-icon" aria-hidden="true">◷</span><div><span class="instrument-label">TEMPO RIMASTO</span><strong id="timeValue">01:30</strong></div></div>
-        <div class="instrument score-instrument"><span class="instrument-label">PUNTI MISSIONE</span><strong id="scoreValue">0000</strong></div>
-        <div class="instrument plastic-instrument"><span class="instrument-label">PLASTICHE RACCOLTE</span><strong><span id="plasticValue">0</span><small> / 18</small></strong></div>
-        <div class="instrument bio-instrument"><span class="instrument-label">BIODIVERSITÀ</span><div class="bio-line"><strong id="bioValue">100<span>%</span></strong><span class="meter"><span id="bioMeter"></span></span></div></div>
-        <div class="instrument-actions"><button class="icon-button is-muted" id="soundButton" aria-label="Attiva i suoni" aria-pressed="false"><svg><use href="#i-sound"/></svg></button><button class="icon-button" id="pauseButton" aria-label="Pausa" disabled><svg><use href="#i-pause"/></svg></button></div>
+  <main class="wrap">
+    <section class="hub-hero" id="hero">
+      <div>
+        <span class="eyebrow">I GIOCHI DI BAT NET MAR</span>
+        <h1>Missione <em>Mare Pulito:</em><span class="hero-sub">plastica, biodiversità e salute… mettiamoci in gioco!</span></h1>
+        <p>Una missione in barca, un Taboo a squadre, un quiz da milionari e altre sfide per conoscere e proteggere il mare. Da soli, in famiglia o in classe.</p>
+        <a class="btn btn-primary" href="#giochi">Scegli un gioco <svg><use href="#i-arrow"/></svg></a>
+        <span class="hero-meta">5 GIOCHI <span>•</span> NESSUNA REGISTRAZIONE <span>•</span> FUNZIONA ANCHE SUL TELEFONO</span>
       </div>
-
-      <div class="ocean" id="ocean" tabindex="0" role="group" aria-label="Area di gioco. Usa le frecce per muovere la barca, spazio per raccogliere, A per lo scanner AI e P per la pausa.">
-        <div class="ocean-shade"></div>
-        <div class="sea-grid" aria-hidden="true"></div>
-        <div class="map-label"><span class="live-dot"></span> <span id="zoneLabel">MEDITERRANEO · ZONA COSTIERA</span></div>
-        <div class="coordinates" aria-hidden="true">37° N &nbsp; 15° E<br><span>BAT NET MAR / 01</span></div>
-        <div id="itemsLayer" class="items-layer"></div>
-        <div id="boat" class="boat" aria-label="Barca Bat net mar"><div class="boat-ring"></div><span class="boat-emoji" aria-hidden="true">🚤</span><span class="boat-name">BAT NET MAR</span></div>
-        <div id="targetMarker" class="target-marker" hidden aria-hidden="true"></div>
-        <div id="effectsLayer" class="effects-layer" aria-hidden="true"></div>
-        <div class="toast" id="toast" role="status" aria-live="polite"></div>
-        <div class="scan-status" id="scanStatus" hidden><svg><use href="#i-scan"/></svg> SCANNER AI ATTIVO <span>· riconoscimento simulato</span></div>
-
-        <div class="start-screen" id="startScreen">
-          <div class="start-copy"><span class="mission-number">MISSIONE 01 <span> / </span> UN MARE, UNA SALUTE</span><h2>Il mare è vivo.<br><em>Teniamolo così.</em></h2><p>Al timone di Bat net mar, raccogli la plastica.<br>Lascia al mare tutto ciò che vive.</p><button class="primary-button" id="startButton">Salpa per la missione <svg><use href="#i-arrow"/></svg></button><span class="start-meta">90 SECONDI <span>•</span> MOUSE, TOUCH O TASTIERA</span></div>
-          <div class="start-callout"><span class="callout-corners" aria-hidden="true"></span><svg><use href="#i-scan"/></svg><div><span>IL TUO ALLEATO A BORDO</span><strong>Riconosci. Raccogli. Proteggi.</strong><p>Attiva lo scanner AI per distinguere<br>la plastica dalla vita marina.</p></div></div>
-          <span class="start-map-note">ESPLORA IL MARE. LASCIA UN SEGNO POSITIVO.</span>
-        </div>
-
-        <div class="pause-screen overlay-screen" id="pauseScreen" hidden><div class="overlay-card"><span class="eyebrow">UN RESPIRO, POI SI RIPARTE</span><h2>Il mare ti aspetta.</h2><p>La missione è in pausa.</p><button class="primary-button" id="resumeButton">Riprendi la missione <svg><use href="#i-arrow"/></svg></button></div></div>
-
-        <div class="result-screen overlay-screen" id="resultScreen" hidden>
-          <div class="result-card"><span class="eyebrow">MISSIONE COMPLETATA</span><h2 id="resultTitle">Ogni gesto conta.</h2><p id="resultSubtitle"></p><div class="result-stats"><div><strong id="resultPlastic">0</strong><span>plastiche raccolte</span></div><div><strong id="resultBio">100%</strong><span>biodiversità</span></div><div><strong id="resultScore">0</strong><span>punti missione</span></div></div><div class="health-message"><svg><use href="#i-heart"/></svg><p><strong>Un mare, una salute.</strong><br>Rimuovere la plastica prima che si frammenti aiuta a ridurre una fonte di microplastiche. La salute del mare riguarda anche noi.</p></div><div class="result-actions"><button class="primary-button" id="restartButton">Una nuova missione <svg><use href="#i-arrow"/></svg></button><button class="text-button" id="learnButton">Porta il gioco nella realtà ↗</button></div><span class="result-note">Punteggi simbolici di gioco, non misure ambientali o sanitarie.</span></div>
-        </div>
-        <div class="map-bottom"><span id="gameHint">OBIETTIVO: 18 PLASTICHE · BIODIVERSITÀ ALMENO ALL’80%</span><span class="compass" aria-hidden="true">N ↑</span></div>
-      </div>
-
-      <div class="control-deck"><div class="control-tip"><span class="cursor-symbol" aria-hidden="true">↖</span><div><strong>Clicca un oggetto per raggiungerlo e raccoglierlo</strong><span>Oppure muoviti con <kbd>↑</kbd><kbd>←</kbd><kbd>↓</kbd><kbd>→</kbd> e raccogli con <kbd>spazio</kbd></span></div></div><div class="game-buttons"><button id="collectButton" class="collect-button" disabled>Raccogli <kbd>spazio</kbd></button><button id="scanButton" class="scan-button" disabled><svg><use href="#i-scan"/></svg><span id="scanButtonLabel">Scanner AI</span><kbd>A</kbd></button></div></div>
     </section>
 
-    <section class="impact-strip" aria-label="Le tre connessioni della missione"><div><span class="impact-number">01</span><p><strong>Meno plastica</strong><span>Raccoglila prima che si disperda.</span></p></div><span class="strip-link" aria-hidden="true">→</span><div><span class="impact-number">02</span><p><strong>Più biodiversità</strong><span>Riconosci la vita. Lasciala libera.</span></p></div><span class="strip-link" aria-hidden="true">→</span><div><span class="impact-number">03</span><p><strong>Una salute condivisa</strong><span>Il benessere del mare ci riguarda.</span></p></div></section>
-  </main>
-  <footer><span>BAT NET MAR <span class="footer-separator">/</span> TECNOLOGIA AL SERVIZIO DEL MARE</span><button class="text-button" id="sourcesButton">La scienza dietro il gioco ↗</button></footer>
+    <div class="section-head" id="giochi">
+      <div><span class="eyebrow">SCEGLI LA TUA SFIDA</span><h2>Tutti i giochi</h2></div>
+      <p>Ogni gioco si apre in una pagina a sé: per tornare qui usa «Torna al menu» in alto o in fondo alla pagina.</p>
+    </div>
 
-  <dialog id="infoDialog" aria-labelledby="dialogTitle"><button class="dialog-close icon-button" id="closeDialog" aria-label="Chiudi"><svg><use href="#i-close"/></svg></button><div id="dialogContent"></div></dialog>
+    <div class="game-grid">
+      <a class="game-card featured" href="./mare-vivo.html" style="--accent:var(--lime)">
+        <div class="card-art"><span class="card-num">01</span><span class="card-badge">IL CLASSICO</span><span class="card-emoji" aria-hidden="true">🚤</span></div>
+        <div class="card-body">
+          <h3>Missione Mare Vivo</h3>
+          <p>Al timone di Bat net mar hai 90 secondi: raccogli almeno 18 plastiche e lascia libera la vita marina. Nel dubbio, fatti aiutare dallo scanner AI.</p>
+          <div class="card-meta"><span class="chip">👤 1 giocatore</span><span class="chip">⏱ 90 secondi</span><span class="chip">🖱 Mouse, touch o tastiera</span></div>
+          <span class="card-cta">Salpa per la missione <svg><use href="#i-arrow"/></svg></span>
+        </div>
+      </a>
+
+      <a class="game-card" href="./taboo.html" style="--accent:var(--coral);--glow:#ffb89855">
+        <div class="card-art"><span class="card-num">02</span><span class="card-badge">A SQUADRE</span><span class="card-emoji" aria-hidden="true">🗣️</span></div>
+        <div class="card-body">
+          <h3>Taboo del Mare</h3>
+          <p>Fai indovinare parole su mare, plastica ed ecologia alla tua squadra, senza dire le parole vietate. Turni a cronometro e classifica dei giocatori.</p>
+          <div class="card-meta"><span class="chip">👥 2 squadre</span><span class="chip">4+ giocatori</span><span class="chip">⏱ 15–30 min</span></div>
+          <span class="card-cta">Gioca <svg><use href="#i-arrow"/></svg></span>
+        </div>
+      </a>
+
+      <a class="game-card" href="./quiz.html" style="--accent:var(--sun);--glow:#ffd66e55">
+        <div class="card-art"><span class="card-num">03</span><span class="card-badge">QUIZ</span><span class="card-emoji" aria-hidden="true">🏆</span></div>
+        <div class="card-body">
+          <h3>Chi vuol essere Custode del Mare?</h3>
+          <p>12 domande sempre più difficili, tre aiuti e due traguardi sicuri. A turno, ognuno scala la sua piramide: vince chi fa più punti.</p>
+          <div class="card-meta"><span class="chip">👤 1–8 giocatori</span><span class="chip">⏱ 10–30 min</span></div>
+          <span class="card-cta">Gioca <svg><use href="#i-arrow"/></svg></span>
+        </div>
+      </a>
+
+      <a class="game-card" href="./memory.html" style="--accent:var(--aqua);--glow:#79ddd055">
+        <div class="card-art"><span class="card-num">04</span><span class="card-badge">MEMORIA</span><span class="card-emoji" aria-hidden="true">🛍️<small>🧺</small></span></div>
+        <div class="card-body">
+          <h3>Memory degli scambi</h3>
+          <p>Trova le coppie: ogni oggetto usa e getta ha un’alternativa riutilizzabile. Da soli contro il tempo o a turno fino a 4 giocatori.</p>
+          <div class="card-meta"><span class="chip">👤 1–4 giocatori</span><span class="chip">⏱ 5 min</span></div>
+          <span class="card-cta">Gioca <svg><use href="#i-arrow"/></svg></span>
+        </div>
+      </a>
+
+      <a class="game-card" href="./tartaruga.html" style="--accent:#9ff0b0;--glow:#9ff0b055">
+        <div class="card-art"><span class="card-num">05</span><span class="card-badge">PAROLE</span><span class="card-emoji" aria-hidden="true">🐢</span></div>
+        <div class="card-body">
+          <h3>Salva la tartaruga</h3>
+          <p>Indovina la parola del mare lettera per lettera prima che il sacchetto di plastica raggiunga la tartaruga. Quante ne salvi di fila?</p>
+          <div class="card-meta"><span class="chip">👤 Da soli o in gruppo</span><span class="chip">⏱ 2 min a parola</span></div>
+          <span class="card-cta">Gioca <svg><use href="#i-arrow"/></svg></span>
+        </div>
+      </a>
+    </div>
+
+    <div class="section-head">
+      <div><span class="eyebrow">PER CLASSI, FAMIGLIE ED EVENTI</span><h2>Come giocare insieme</h2></div>
+    </div>
+    <div class="tips">
+      <div class="tip"><span class="tip-number">01</span><p><strong>Un solo dispositivo basta</strong><span>Taboo, quiz e Memory si giocano passando il telefono o proiettando lo schermo per tutti.</span></p></div>
+      <div class="tip"><span class="tip-number">02</span><p><strong>La partita resta salvata</strong><span>Se chiudi per sbaglio la pagina, Taboo e quiz propongono di riprendere dal turno in cui eravate.</span></p></div>
+      <div class="tip"><span class="tip-number">03</span><p><strong>Si gioca, poi si parla</strong><span>Ogni risposta del quiz ha una spiegazione: sono spunti per discutere di mare, plastica e salute.</span></p></div>
+    </div>
+  </main>
+
+  <footer class="wrap"><span>MISSIONE MARE PULITO <span class="footer-separator">/</span> TECNOLOGIA AL SERVIZIO DEL MARE</span><a href="./mare-vivo.html">Il progetto e le fonti sono nella Missione Mare Vivo ↗</a></footer>
+
+  <script>
+    // Lo sfondo è locale: la pagina funziona anche senza connessione.
+    (() => { const art = new Image(); art.onload = () => document.getElementById('hero').classList.add('has-art'); art.src = './assets/ocean.png'; })();
+  </script>
 </body>
 </html>
